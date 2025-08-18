@@ -304,6 +304,7 @@ const PackagesPlans = () => {
             <Input.TextArea
               rows={4}
               placeholder="Short description of what this package offers"
+              disabled={isEditing}
             />
           </Form.Item>
 
@@ -333,7 +334,7 @@ const PackagesPlans = () => {
 
           <Form.Item
             name="features"
-            label="Features (one per line)"
+            label="Features"
             rules={[
               { required: true, message: "At least one feature is required" },
             ]}

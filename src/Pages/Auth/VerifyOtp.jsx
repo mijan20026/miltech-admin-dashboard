@@ -1,27 +1,25 @@
 import { Button, Form, Typography, Input } from "antd";
-import React, { useState } from "react"
+import React, { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate, useParams } from "react-router-dom";
 const { Text } = Typography;
-import mailIcon from "../../assets/mail.png"
+import mailIcon from "../../assets/mail.png";
 import { ArrowLeft } from "lucide-react";
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState();
-  const email = new URLSearchParams(location.search).get("email")
+  const email = new URLSearchParams(location.search).get("email");
 
-  const onFinish = async(values) => {
-        navigate(`/auth/reset-password?email=${email}`);
+  const onFinish = async (values) => {
+    navigate(`/auth/set-password?email=${email}`);
   };
 
-  const handleResendEmail = async() => {
-
-  };
+  const handleResendEmail = async () => {};
 
   return (
     <div>
-      <img src={mailIcon} alt="KeyIcon" className="mb-[24px] mx-auto"/>
+      <img src={mailIcon} alt="KeyIcon" className="mb-[24px] mx-auto" />
       <div className="text-center mb-8">
         <h1 className="text-[25px] font-semibold mb-6">Check your email</h1>
         <p className="mx-auto text-base text-[#667085]">
@@ -53,15 +51,18 @@ const VerifyOtp = () => {
         <p className="text-center text-[#667085]">
           Didn’t receive the email?{" "}
           <a
-            href="/auth/register"
+            href="/auth/login"
             className="text-[#3FAE6A] hover:text-[#1E1E1E] font-semibold"
           >
             Click to resend
           </a>
         </p>
-        </div>
+      </div>
       <div className="">
-        <a href="/auth/login" className="flex items-center justify-center gap-1 text-[#667085] hover:text-[#3FAE6A] text-center mt-4">
+        <a
+          href="/auth/login"
+          className="flex items-center justify-center gap-1 text-[#667085] hover:text-[#3FAE6A] text-center mt-4"
+        >
           <ArrowLeft size={20} />
           <p>Back to log in</p>
         </a>
