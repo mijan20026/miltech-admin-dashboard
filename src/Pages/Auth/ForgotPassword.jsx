@@ -68,7 +68,7 @@ const ForgotPassword = () => {
       </Form>
       <div className="">
         <Link
-          href="/auth/login"
+          to="/auth/login"
           className="flex items-center justify-center gap-1 text-[#667085] hover:text-[#3FAE6A] text-center mt-4"
         >
           <ArrowLeft size={20} />
