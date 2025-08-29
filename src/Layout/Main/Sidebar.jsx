@@ -205,7 +205,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
 
   return (
     <div
-      className="h-full flex flex-col bg-white border-r border-gray-200 transition-all duration-300"
+      className="h-full flex flex-col bg-white border-r border-primary transition-all duration-300"
       style={{ width: collapsed ? 80 : 250 }}
     >
       {/* Toggle Button */}

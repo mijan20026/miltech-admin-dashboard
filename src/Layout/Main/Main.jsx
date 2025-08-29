@@ -9,7 +9,7 @@ const Main = () => {
   // Auto-collapse below 990px on mount
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 990) setCollapsed(true);
+      if (window.innerWidth < 992) setCollapsed(true);
       else setCollapsed(false);
     };
     window.addEventListener("resize", handleResize);
