@@ -56,7 +56,7 @@ export default function TierSystem() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-[24px] font-bold">Loyalty Program Management</h1>
+          <h1 className="text-[24px] font-bold">Point & Tier System</h1>
           <p className="text-[16px] font-normal mt-2">
             Configure your tiers, rewards, and point accumulation rules.
           </p>

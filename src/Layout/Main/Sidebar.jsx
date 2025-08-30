@@ -80,7 +80,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       icon: renderIcon(People, "/customerManagement"),
       label: (
         <Link to="/customerManagement">
-          {collapsed ? "" : "Customer Management"}
+          {collapsed ? "" : "Customer Profile"}
         </Link>
       ),
     },
@@ -131,12 +131,10 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       label: <Link to="/auditLogs">{collapsed ? "" : "Audit Logs"}</Link>,
     },
     {
-      key: "/loginCredentials",
-      icon: renderIcon(loginCredentials, "/loginCredentials"),
+      key: "/userManagement",
+      icon: renderIcon(loginCredentials, "/userManagement"),
       label: (
-        <Link to="/loginCredentials">
-          {collapsed ? "" : "Login Credentials"}
-        </Link>
+        <Link to="/userManagement">{collapsed ? "" : "User Management"}</Link>
       ),
     },
     {

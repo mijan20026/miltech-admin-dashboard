@@ -64,7 +64,7 @@ const CustomerManagement = () => {
     },
     {
       id: 3,
-      name: "John Doe",
+      name: "John",
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
       email: "john@email.com",
       retailer: 3,
@@ -78,6 +78,7 @@ const CustomerManagement = () => {
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [searchText, setSearchText] = useState(""); // Search text state
 
   const navigate = useNavigate();
 
@@ -90,6 +91,14 @@ const CustomerManagement = () => {
     setIsViewModalVisible(false);
     setSelectedRecord(null);
   };
+
+  const filteredData = data.filter(
+    (item) =>
+      item.id.toString().includes(searchText) ||
+      item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.phone.includes(searchText) ||
+      item.email.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const columns2 = [
     {
@@ -116,9 +125,9 @@ const CustomerManagement = () => {
 
   const columns = [
     { title: "SL", dataIndex: "id", key: "id", align: "center" },
-    { title: "Owner Name", dataIndex: "name", key: "name", align: "center" },
+    { title: "Customer ID", dataIndex: "id", key: "id", align: "center" },
     {
-      title: "Business Name",
+      title: "Customer Name",
       dataIndex: "businessName",
       key: "businessName",
       align: "center",
@@ -291,18 +300,31 @@ const CustomerManagement = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6 ">
-        <div>
-          <h1 className="text-[24px] font-bold">Customer Management</h1>
-          <p className="text-[16px] font-normal mt-2">
-            Seamlessly manage customer profiles and interactions.
-          </p>
+      <div className="flex justify-between items-end">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-4 ">
+          <div>
+            <h1 className="text-[24px] font-bold">Customer Management</h1>
+            <p className="text-[16px] font-normal mt-2">
+              Seamlessly manage customer profiles and interactions.
+            </p>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-4">
+          <Input
+            placeholder="Search by Customer ID, Name, Phone or Email"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-96"
+          />
         </div>
       </div>
 
       <div className="">
         <Table
-          dataSource={data}
+          dataSource={filteredData}
           columns={columns}
           pagination={{ pageSize: 10 }}
           bordered={false}
@@ -364,7 +386,7 @@ const CustomerManagement = () => {
                   Loyalty Points
                 </p>
                 <p>
-                  <strong>Points Balance:</strong> {selectedRecord.name}
+                  <strong>Points Balance:</strong> {selectedRecord.sales}
                 </p>
                 <p>
                   <strong>Tier:</strong> {selectedRecord.businessName}

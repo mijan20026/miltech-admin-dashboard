@@ -104,75 +104,68 @@ const Home = () => {
         </div>
       </div> */}
 
-      <div className="flex gap-10   rounded-lg">
+      <div className="flex flex-col xl:flex-row gap-10 rounded-lg">
         {/* Line Chart Section */}
-        <div className=" flex-1 w-2/3 border border-primary bg-[#D7F4DE]  rounded-lg p-6 ">
+        <div className="w-full xl:flex-1 border border-primary bg-[#D7F4DE] rounded-lg p-6">
           <LineChart />
         </div>
+
         {/* Card Section */}
-        <div className=" w-1/3 bg-[#D7F4DE] border border-primary p-6 rounded-lg">
+        <div className="w-full xl:w-1/3 bg-[#D7F4DE] border border-primary p-6 rounded-lg">
           <div className="flex justify-between items-center mb-4 text-white">
             <h2 className="text-secondary mt-4 text-[24px] font-bold">
               Statistics
             </h2>
-            <p className=" font-medium text-[14px] py-[12px] px-[16px] border border-primary text-secondary rounded-lg">
+            <p className="font-medium text-[14px] py-[12px] px-[16px] border border-primary text-secondary rounded-lg">
               Last 7 Days
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3 h-[240px]">
             <div className="bg-white border border-primary rounded-lg flex items-center justify-center">
-              <div className="flex items-center">
-                <div className="flex flex-col items-baseline">
-                  <h2 className="text-center text-[16px] font-semibold mb-1">
-                    Total Merchants
-                  </h2>
-                  <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
-                    <Marchant className="w-[20px] h-[20px] text-secondary" />
-                    23
-                  </h3>
-                </div>
+              <div className="flex flex-col items-baseline">
+                <h2 className="text-center text-[16px] font-semibold mb-1">
+                  Total Merchants
+                </h2>
+                <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
+                  <Marchant className="w-[20px] h-[20px] text-secondary" />
+                  23
+                </h3>
               </div>
             </div>
 
             <div className="bg-white border border-primary rounded-lg flex items-center justify-center">
-              <div className="flex items-center">
-                <div className="flex flex-col items-baseline">
-                  <h2 className="text-center text-[16px] font-semibold mb-1">
-                    Total Customers
-                  </h2>
-                  <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
-                    <People className="w-[20px] h-[20px] text-secondary" />
-                    500
-                  </h3>
-                </div>
+              <div className="flex flex-col items-baseline">
+                <h2 className="text-center text-[16px] font-semibold mb-1">
+                  Total Customers
+                </h2>
+                <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
+                  <People className="w-[20px] h-[20px] text-secondary" />
+                  500
+                </h3>
               </div>
             </div>
 
             <div className="bg-white border border-primary rounded-lg flex items-center justify-center">
-              <div className="flex items-center">
-                <div className="flex flex-col items-baseline">
-                  <h2 className="text-center text-[16px] font-semibold mb-1">
-                    Pending Approvals
-                  </h2>
-                  <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
-                    <Pending className="w-[20px] h-[20px] text-secondary" />3
-                  </h3>
-                </div>
+              <div className="flex flex-col items-baseline">
+                <h2 className="text-center text-[16px] font-semibold mb-1">
+                  Pending Approvals
+                </h2>
+                <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
+                  <Pending className="w-[20px] h-[20px] text-secondary" />3
+                </h3>
               </div>
             </div>
 
             <div className="bg-white border border-primary rounded-lg flex items-center justify-center">
-              <div className="flex items-center">
-                <div className="flex flex-col items-baseline">
-                  <h2 className="text-center text-[16px] font-semibold mb-1">
-                    Subscription Revenue
-                  </h2>
-                  <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
-                    <SubscriptionManagement className="w-[20px] h-[20px] text-secondary" />
-                    $4,250.75
-                  </h3>
-                </div>
+              <div className="flex flex-col items-baseline">
+                <h2 className="text-center text-[16px] font-semibold mb-1">
+                  Subscription Revenue
+                </h2>
+                <h3 className="text-secondary text-[24px] text-center font-semibold flex items-center gap-3">
+                  <SubscriptionManagement className="w-[20px] h-[20px] text-secondary" />
+                  $4000
+                </h3>
               </div>
             </div>
           </div>

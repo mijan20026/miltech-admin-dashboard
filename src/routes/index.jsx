@@ -94,7 +94,7 @@ const router = createBrowserRouter([
         element: <AuditLogs />,
       },
       {
-        path: "/loginCredentials",
+        path: "/userManagement",
         element: <LoginCredentials />,
       },
       {

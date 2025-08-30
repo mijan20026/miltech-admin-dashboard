@@ -93,7 +93,12 @@ const SalesRepsManagementTable = () => {
 
   const columns = [
     { title: "SL", dataIndex: "id", key: "id", align: "center" },
-    { title: "Owner Name", dataIndex: "name", key: "name", align: "center" },
+    {
+      title: "Merchant Card ID",
+      dataIndex: "id",
+      key: "id",
+      align: "center",
+    },
     {
       title: "Business Name",
       dataIndex: "businessName",
