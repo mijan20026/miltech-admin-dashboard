@@ -149,13 +149,13 @@ export default function MonthlyStatsChart() {
           ))}
         </Select>
 
-        <Select value={selectedCategory} style={{ width: 150 }} onChange={setSelectedCategory}>
+        {/* <Select value={selectedCategory} style={{ width: 150 }} onChange={setSelectedCategory}>
           {categoryOptions.map((option) => (
             <Option key={option} value={option}>
               {option}
             </Option>
           ))}
-        </Select>
+        </Select> */}
 
         <Select value={selectedRegion} style={{ width: 150 }} onChange={setSelectedRegion}>
           {regionOptions.map((option) => (

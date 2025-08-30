@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Tooltip, Switch } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Tooltip,
+  Switch,
+  message,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
@@ -64,20 +73,23 @@ const SalesRepsManagementTable = () => {
     },
     {
       id: 3,
-      name: "John Doe",
+      name: "Jane Smith",
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
-      email: "john@email.com",
-      retailer: 3,
-      sales: "$500",
+      email: "jane@email.com",
+      retailer: 4,
+      sales: "$700",
       status: "Active",
-      phone: "+9876543210",
-      location: "California",
-      businessName: "John's Shop",
+      phone: "+1112223333",
+      location: "Texas",
+      businessName: "Jane's Boutique",
     },
   ]);
 
   const [isViewModalVisible, setIsViewModalVisible] = useState(false);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [form] = Form.useForm();
+  const [searchText, setSearchText] = useState("");
 
   const navigate = useNavigate();
 
@@ -90,6 +102,78 @@ const SalesRepsManagementTable = () => {
     setIsViewModalVisible(false);
     setSelectedRecord(null);
   };
+
+  const handleAddMerchant = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        const newMerchant = {
+          id: data.length + 1,
+          ...values,
+          sales: values.sales || "$0",
+          status: values.status || "Inactive",
+          image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
+        };
+        setData([...data, newMerchant]);
+        setIsAddModalVisible(false);
+        form.resetFields();
+        message.success("New merchant added successfully!");
+      })
+      .catch((info) => {
+        console.log("Validate Failed:", info);
+      });
+  };
+
+  // Export CSV
+  const exportToCSV = () => {
+    const csvRows = [];
+    const headers = [
+      "Merchant Card ID",
+      "Business Name",
+      "Phone",
+      "Email",
+      "Location",
+      "Sales Rep",
+      "Total Sales",
+      "Status",
+    ];
+    csvRows.push(headers.join(","));
+
+    data.forEach((row) => {
+      const values = [
+        row.id,
+        row.businessName,
+        row.phone,
+        row.email,
+        row.location,
+        row.name,
+        row.sales,
+        row.status,
+      ];
+      csvRows.push(values.join(","));
+    });
+
+    const csvString = csvRows.join("\n");
+    const blob = new Blob([csvString], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.setAttribute("hidden", "");
+    a.setAttribute("href", url);
+    a.setAttribute("download", "merchants.csv");
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  // Filter data
+  const filteredData = data.filter(
+    (item) =>
+      item.id.toString().includes(searchText) ||
+      item.businessName.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.phone.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.email.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const columns = [
     { title: "SL", dataIndex: "id", key: "id", align: "center" },
@@ -126,66 +210,6 @@ const SalesRepsManagementTable = () => {
       key: "action",
       align: "center",
       render: (_, record) => (
-        // <div className="flex items-center justify-center">
-        //   <div className="flex gap-2 border border-primary rounded-md p-1">
-        //     <Button
-        //       className="bg-primary !text-white hover:!text-black"
-        //       onClick={() => {
-        //         Swal.fire({
-        //           title: "Are you sure?",
-        //           text: "Do you want to accept this sales rep?",
-        //           icon: "question",
-        //           showCancelButton: true,
-        //           confirmButtonColor: "#3085d6",
-        //           cancelButtonColor: "#d33",
-        //           confirmButtonText: "Yes, accept",
-        //         }).then((result) => {
-        //           if (result.isConfirmed) {
-        //             Swal.fire({
-        //               title: "Accepted!",
-        //               text: "The sales rep has been accepted.",
-        //               icon: "success",
-        //               timer: 1500,
-        //               showConfirmButton: false,
-        //             });
-        //             // TODO: Add your actual accept logic here
-        //           }
-        //         });
-        //       }}
-        //     >
-        //       Accept
-        //     </Button>
-
-        //     <Button
-        //       className="bg-red-600 !text-white hover:!text-black"
-        //       onClick={() => {
-        //         Swal.fire({
-        //           title: "Are you sure?",
-        //           text: "Do you want to reject this sales rep?",
-        //           icon: "warning",
-        //           showCancelButton: true,
-        //           confirmButtonColor: "#3085d6",
-        //           cancelButtonColor: "#d33",
-        //           confirmButtonText: "Yes, reject",
-        //         }).then((result) => {
-        //           if (result.isConfirmed) {
-        //             Swal.fire({
-        //               title: "Rejected!",
-        //               text: "The sales rep has been rejected.",
-        //               icon: "success",
-        //               timer: 1500,
-        //               showConfirmButton: false,
-        //             });
-        //             // TODO: Add your actual reject logic here
-        //           }
-        //         });
-        //       }}
-        //     >
-        //       Reject
-        //     </Button>
-        //   </div>
-        // </div>
-
         <div
           className="flex gap-0 justify-between align-middle py-[7px] px-[15px] border border-primary rounded-md"
           style={{ alignItems: "center" }}
@@ -273,41 +297,54 @@ const SalesRepsManagementTable = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6 ">
+      <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-[24px] font-bold">Merchant Management</h1>
           <p className="text-[16px] font-normal mt-2">
             Effortlessly manage your merchants and track performance.
           </p>
         </div>
+
+        <div className="flex gap-2">
+          <Input.Search
+            placeholder="Search by ID, Business, Phone, Email"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{ width: 300 }}
+            allowClear
+          />
+          <Button
+            className="bg-primary text-white hover:!text-black"
+            onClick={() => setIsAddModalVisible(true)}
+          >
+            Add New Merchant
+          </Button>
+          <Button
+            className="bg-primary text-white hover:!text-black"
+            // onClick={exportToCSV}
+          >
+            Export
+          </Button>
+        </div>
       </div>
 
-      <div className="">
-        <Table
-          dataSource={data}
-          columns={columns}
-          pagination={{ pageSize: 10 }}
-          bordered={false}
-          size="small"
-          rowClassName="custom-row"
-          components={components}
-          className="custom-table"
-        />
-      </div>
+      <Table
+        dataSource={filteredData}
+        columns={columns}
+        pagination={{ pageSize: 10 }}
+        bordered={false}
+        size="small"
+        rowClassName="custom-row"
+        components={components}
+        className="custom-table"
+      />
 
       {/* View Details Modal */}
       <Modal
-        // title="Merchant Profile"
         visible={isViewModalVisible}
         onCancel={handleCloseViewModal}
         width={700}
-        footer={
-          [
-            // <Button key="close" type="primary" onClick={handleCloseViewModal}>
-            //   Close
-            // </Button>,
-          ]
-        }
+        footer={[]}
       >
         {selectedRecord && (
           <div className="flex flex-row items-center justify-between gap-3 mt-8 mb-8">
@@ -344,6 +381,60 @@ const SalesRepsManagementTable = () => {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Add New Merchant Modal */}
+      <Modal
+        visible={isAddModalVisible}
+        title="Add New Merchant"
+        onCancel={() => setIsAddModalVisible(false)}
+        onOk={handleAddMerchant}
+        okText="Add Merchant"
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item
+            name="businessName"
+            label="Business Name"
+            rules={[{ required: true, message: "Please enter business name" }]}
+          >
+            <Input placeholder="Enter business name" />
+          </Form.Item>
+          <Form.Item
+            name="phone"
+            label="Phone Number"
+            rules={[{ required: true, message: "Please enter phone number" }]}
+          >
+            <Input placeholder="Enter phone number" />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: "Please enter email" }]}
+          >
+            <Input placeholder="Enter email" />
+          </Form.Item>
+          <Form.Item
+            name="location"
+            label="Location"
+            rules={[{ required: true, message: "Please enter location" }]}
+          >
+            <Input placeholder="Enter location" />
+          </Form.Item>
+          <Form.Item
+            name="name"
+            label="Sales Rep"
+            rules={[{ required: true, message: "Please enter sales rep name" }]}
+          >
+            <Input placeholder="Enter sales rep name" />
+          </Form.Item>
+          <Form.Item
+            name="sales"
+            label="Total Sales"
+            rules={[{ required: true, message: "Please enter total sales" }]}
+          >
+            <Input placeholder="Enter sales (e.g. $500)" />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );
