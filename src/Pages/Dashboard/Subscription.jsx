@@ -173,7 +173,7 @@ const PackagesPlans = () => {
   };
 
   return (
-    <div className=" px-4">
+    <div className="pt-6 px-4">
       <div className="flex flex-col justify-center items-center mb-8">
         <p className="bg-primary px-[12px] py-[4px] text-white rounded-3xl mb-2">
           Pricing Plan
@@ -185,14 +185,14 @@ const PackagesPlans = () => {
           Simple, transparent pricing that grows with you. Try any plan free for
           30 days.
         </p>
-        {/* <GradientButton
+        <GradientButton
           type="primary"
           icon={<PlusOutlined />}
           className=" text-white px-5 py-2 h-auto rounded-lg shadow-lg hover:bg-[#012F60] transition-all flex items-center"
           onClick={() => showModal()}
         >
           Add Package
-        </GradientButton> */}
+        </GradientButton>
       </div>
 
       {packages.length === 0 ? (
@@ -304,7 +304,7 @@ const PackagesPlans = () => {
             <Input.TextArea
               rows={4}
               placeholder="Short description of what this package offers"
-              disabled={isEditing}
+              // disabled={isEditing}
             />
           </Form.Item>
 
