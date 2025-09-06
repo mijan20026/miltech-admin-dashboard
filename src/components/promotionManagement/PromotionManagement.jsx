@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Table, Button, Switch, Form, Input, Tooltip } from "antd";
+import { Table, Button, Switch, Form, Input, Tooltip, Modal } from "antd";
 import { FaEdit } from "react-icons/fa";
 import { IoEyeSharp, IoArrowBack } from "react-icons/io5";
 import Swal from "sweetalert2";
@@ -90,7 +90,7 @@ const PromotionManagement = () => {
       )
     );
     setIsEditModalVisible(false);
-    setSelectedRecord(null); // <-- reset selectedRecord
+    setSelectedRecord(null);
     Swal.fire({
       icon: "success",
       title: "Updated!",
@@ -102,7 +102,7 @@ const PromotionManagement = () => {
 
   const handleEditCancel = () => {
     setIsEditModalVisible(false);
-    setSelectedRecord(null); // <-- reset selectedRecord
+    setSelectedRecord(null);
   };
 
   const columns = [
@@ -188,7 +188,7 @@ const PromotionManagement = () => {
             <Tooltip title="Edit">
               <button
                 onClick={() => {
-                  setSelectedRecord(record); // Important: set record before opening modal
+                  setSelectedRecord(record);
                   setIsEditModalVisible(true);
                 }}
                 className="text-primary hover:text-green-700 text-[17px]"
@@ -289,14 +289,13 @@ const PromotionManagement = () => {
               className="mb-4"
             ></Button>
             <div>
-              <h1 className="text-[24px] font-bold">Campaign Details</h1>
+              <h1 className="text-[24px] font-bold">Promotion Details</h1>
               <p className="text-[16px] font-normal mt-2">
-                View and manage all the details of your active campaigns.
+                View and manage all the details of your active promotions.
               </p>
             </div>
           </div>
           <Button
-            // icon={<IoArrowBack />}
             onClick={() => setSelectedRecord(null)}
             type="primary"
             className="bg-primary !text-white hover:!text-secondary hover:!bg-white hover:!border-primary px-[30px] py-[25px] rounded-full text-[18px] font-bold"
@@ -305,27 +304,30 @@ const PromotionManagement = () => {
           </Button>
         </div>
 
-        <Table
-          dataSource={data}
-          columns={columns2}
-          pagination={{ pageSize: 10 }}
-          bordered={false}
-          size="small"
-          rowClassName="custom-row"
-          components={components}
-          className="custom-table"
-        />
+        <div className="overflow-x-auto">
+          <Table
+            dataSource={data}
+            columns={columns2}
+            pagination={{ pageSize: 10 }}
+            bordered={false}
+            size="small"
+            rowClassName="custom-row"
+            components={components}
+            className="custom-table"
+            scroll={{ x: "max-content" }}
+          />
+        </div>
       </div>
     );
   }
 
   return (
     <div className="">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between flex-col md:flex-row gap-4 items-start md:items-end mb-6">
         <div>
-          <h1 className="text-[24px] font-bold">Campaigns List</h1>
+          <h1 className="text-[24px] font-bold">Promotions List</h1>
           <p className="text-[16px] font-normal mt-2">
-            View and manage all your active campaigns in one place.
+            View and manage all your active promotions in one place.
           </p>
         </div>
         <Button
@@ -333,83 +335,94 @@ const PromotionManagement = () => {
           className="bg-primary !text-white hover:!text-secondary hover:!bg-white hover:!border-primary px-[30px] py-[25px] rounded-full text-[18px] font-bold"
           onClick={() => setIsNewCampaignModalVisible(true)}
         >
-          New Campaign
+          New Promotion
         </Button>
       </div>
 
-      <Table
-        dataSource={data}
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-        bordered={false}
-        size="small"
-        rowClassName="custom-row"
-        components={components}
-        className="custom-table"
-      />
+      <div className="overflow-x-auto">
+        <Table
+          dataSource={data}
+          columns={columns}
+          pagination={{ pageSize: 10 }}
+          bordered={false}
+          size="small"
+          rowClassName="custom-row"
+          components={components}
+          className="custom-table"
+          scroll={{ x: "max-content" }}
+        />
+      </div>
 
       {/* Edit Campaign Modal */}
-      {isEditModalVisible && selectedRecord && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-md w-[600px]">
-            <Form
-              layout="vertical"
-              initialValues={selectedRecord}
-              onFinish={handleEditSave}
+      <Modal
+        title="Edit Promotion"
+        visible={isEditModalVisible}
+        onCancel={handleEditCancel}
+        footer={null}
+        width={600}
+        closable={true}
+      >
+        {selectedRecord && (
+          <Form
+            layout="vertical"
+            initialValues={selectedRecord}
+            onFinish={handleEditSave}
+          >
+            <Form.Item
+              name="promotionName"
+              label="Promotion Name"
+              rules={[{ required: true, message: "Please enter name" }]}
             >
-              <Form.Item
-                name="promotionName"
-                label="Promotion Name"
-                rules={[{ required: true, message: "Please enter name" }]}
+              <Input />
+            </Form.Item>
+            <Form.Item name="promotionType" label="Promotion Type">
+              <Input />
+            </Form.Item>
+            <Form.Item name="customerReach" label="Customer Reach">
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item name="customerSegment" label="Customer Segment">
+              <Input />
+            </Form.Item>
+            <Form.Item name="discountPercentage" label="Discount Percentage">
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item name="startDate" label="Start Date">
+              <Input type="date" />
+            </Form.Item>
+            <Form.Item name="endDate" label="End Date">
+              <Input type="date" />
+            </Form.Item>
+            <div className="flex gap-2 mt-4">
+              <Button
+                type="default"
+                className="flex-1"
+                onClick={handleEditCancel}
               >
-                <Input />
-              </Form.Item>
-              <Form.Item name="promotionType" label="Promotion Type">
-                <Input />
-              </Form.Item>
-              <Form.Item name="customerReach" label="Customer Reach">
-                <Input type="number" />
-              </Form.Item>
-              <Form.Item name="customerSegment" label="Customer Segment">
-                <Input />
-              </Form.Item>
-              <Form.Item name="discountPercentage" label="Discount Percentage">
-                <Input type="number" />
-              </Form.Item>
-              <Form.Item name="startDate" label="Start Date">
-                <Input type="date" />
-              </Form.Item>
-              <Form.Item name="endDate" label="End Date">
-                <Input type="date" />
-              </Form.Item>
-              <div className="flex gap-2 mt-4">
-                <Button
-                  type="default"
-                  className="flex-1"
-                  onClick={handleEditCancel} // <-- use the new handler
-                >
-                  Cancel
-                </Button>
-                <Button type="primary" htmlType="submit" className="flex-1">
-                  Save Changes
-                </Button>
-              </div>
-            </Form>
-          </div>
-        </div>
-      )}
+                Cancel
+              </Button>
+              <Button type="primary" htmlType="submit" className="flex-1">
+                Save Changes
+              </Button>
+            </div>
+          </Form>
+        )}
+      </Modal>
 
       {/* New Campaign Modal */}
-      {isNewCampaignModalVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-md w-[1000px]">
-            <NewCampaign
-              onSave={handleAddCampaign}
-              onCancel={() => setIsNewCampaignModalVisible(false)}
-            />
-          </div>
-        </div>
-      )}
+      <Modal
+        title="New Promotion"
+        visible={isNewCampaignModalVisible}
+        onCancel={() => setIsNewCampaignModalVisible(false)}
+        footer={null}
+        width={1000}
+        closable={true}
+      >
+        <NewCampaign
+          onSave={handleAddCampaign}
+          onCancel={() => setIsNewCampaignModalVisible(false)}
+        />
+      </Modal>
     </div>
   );
 };

@@ -39,57 +39,45 @@ const PushNotifications = () => {
   };
 
   return (
-    <div className="border rounded-lg px-12 py-8">
+    <div className="border rounded-lg px-12 py-8 bg-white">
       <div className="flex justify-between items-center mb-[50px]">
         <h2 className="text-xl font-bold">Send Push Notifications</h2>
       </div>
 
       {/* Segment Dropdown */}
-      <div className="mb-6 flex gap-6 items-center">
-        <div className="basis-[5%]">
-          <label className="font-bold text-[18px]">Segment</label>
-        </div>
-        <div className="basis-[95%]">
-          <Select
-            placeholder="Select Segment"
-            value={segment}
-            onChange={(value) => setSegment(value)}
-            style={{ width: "100%" }}
-          >
-            <Option value="all_users">All Users</Option>
-            <Option value="premium_members">Premium Members</Option>
-            <Option value="gold_members">Gold Members</Option>
-            <Option value="inactive_users">Inactive Users</Option>
-          </Select>
-        </div>
+      <div className="mb-6 flex flex-col gap-2">
+        <label className="font-bold text-[18px] mb-1">Segment</label>
+        <Select
+          placeholder="Select Segment"
+          value={segment}
+          onChange={(value) => setSegment(value)}
+          style={{ width: "100%" }}
+        >
+          <Option value="all_users">All Users</Option>
+          <Option value="premium_members">Premium Members</Option>
+          <Option value="gold_members">Gold Members</Option>
+          <Option value="inactive_users">Inactive Users</Option>
+        </Select>
       </div>
 
       {/* Title Field */}
-      <div className="mb-6 flex gap-6 items-center">
-        <div className="basis-[5%]">
-          <label className="font-bold text-[18px]">Title</label>
-        </div>
-        <div className="basis-[95%]">
-          <Input
-            placeholder="Enter notification title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
+      <div className="mb-6 flex flex-col gap-2">
+        <label className="font-bold text-[18px] mb-1">Title</label>
+        <Input
+          placeholder="Enter notification title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
       </div>
 
       {/* Body Editor */}
-      <div className="mb-6 flex gap-6 items-start">
-        <div className="basis-[5%]">
-          <label className="font-bold text-[18px]">Body</label>
-        </div>
-        <div className="basis-[95%]">
-          <JoditEditor
-            ref={editor}
-            value={bodyContent}
-            onChange={(newContent) => setBodyContent(newContent)}
-          />
-        </div>
+      <div className="mb-6 flex flex-col gap-2">
+        <label className="font-bold text-[18px] mb-1">Body</label>
+        <JoditEditor
+          ref={editor}
+          value={bodyContent}
+          onChange={(newContent) => setBodyContent(newContent)}
+        />
       </div>
 
       {/* Action Buttons */}

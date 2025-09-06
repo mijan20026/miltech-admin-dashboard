@@ -18,37 +18,29 @@ ChartJS.register(
   PointElement,
   LineElement,
   Title,
-  Tooltip
+  Tooltip,
+  Legend
 );
 
 const LineChart = () => {
-  // State to manage the selected year, with 2025 as the default
   const [selectedYear, setSelectedYear] = useState(2025);
   const [chartHeight, setChartHeight] = useState("200px");
+  const [isOpen, setIsOpen] = useState(false);
 
-  // Effect to update chart height based on screen size
+  const years = [2023, 2024, 2025];
+
   useEffect(() => {
     const updateChartHeight = () => {
-      if (window.innerWidth < 768) {
-        setChartHeight("150px");
-      } else if (window.innerWidth < 1024) {
-        setChartHeight("200px");
-      } else {
-        setChartHeight("250px");
-      }
+      if (window.innerWidth < 768) setChartHeight("150px");
+      else if (window.innerWidth < 1024) setChartHeight("200px");
+      else setChartHeight("250px");
     };
 
-    // Set initial height
     updateChartHeight();
-
-    // Add event listener for window resize
     window.addEventListener("resize", updateChartHeight);
-
-    // Clean up event listener
     return () => window.removeEventListener("resize", updateChartHeight);
   }, []);
 
-  // Data for the line chart
   const allData = {
     2023: {
       labels: [
@@ -142,74 +134,45 @@ const LineChart = () => {
     },
   };
 
-  // Function to handle the change of selected year
-  const handleYearChange = (event) => {
-    setSelectedYear(parseInt(event.target.value));
-  };
-
-  // Chart options and data based on selected year
   const data = allData[selectedYear];
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: false,
-        labels: {
-          color: "#3fae6a",
-        },
-      },
+      legend: { display: false },
       tooltip: {
         titleColor: "#ffffff",
         bodyColor: "#ffffff",
         backgroundColor: "#3fae6a",
-        padding: {
-          x: 20, // Horizontal padding
-          y: 2, // Vertical padding
-        },
+        padding: { x: 20, y: 2 },
         cornerRadius: 8,
         displayColors: false,
         callbacks: {
-          title: () => null, // ⬅ Removes month name
+          title: () => null,
           label: (context) => `$${context.raw.toLocaleString()}`,
         },
       },
     },
     scales: {
       x: {
-        grid: {
-          display: true,
-          color: "#198248",
-        },
+        grid: { display: true, color: "#198248" },
         ticks: {
           color: "#181818",
           maxRotation: 45,
           minRotation: 0,
           autoSkip: true,
-          font: {
-            size: (context) => {
-              return window.innerWidth < 768 ? 8 : 12;
-            },
-          },
+          font: { size: window.innerWidth < 768 ? 8 : 12 },
         },
       },
       y: {
-        grid: {
-          display: false,
-        },
+        grid: { display: false },
         beginAtZero: false,
         ticks: {
           color: "#181818",
           padding: window.innerWidth < 768 ? 10 : 32,
-          callback: function (value) {
-            return `$${value.toLocaleString()}K`;
-          },
-          font: {
-            size: (context) => {
-              return window.innerWidth < 768 ? 8 : 12;
-            },
-          },
+          callback: (value) => `$${value.toLocaleString()}K`,
+          font: { size: window.innerWidth < 768 ? 8 : 12 },
         },
       },
     },
@@ -221,17 +184,36 @@ const LineChart = () => {
         <h2 className="text-lg sm:text-xl font-bold text-secondary">
           Total Revenue
         </h2>
-        {/* <select
-          value={selectedYear}
-          onChange={handleYearChange}
-          className="bg-primary text-white py-1 sm:py-2 px-3 sm:px-5 rounded-lg"
-          style={{ outline: "none" }}
-        >
-          <option value={2023}>2023</option>
-          <option value={2024}>2024</option>
-          <option value={2025}>2025</option>
-        </select> */}
+
+        {/* Custom dropdown like Statistics select */}
+        <div className="relative inline-block w-[150px]">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full font-medium text-[14px] py-[12px] px-[16px] border border-primary text-secondary rounded-lg text-left flex justify-between items-center"
+          >
+            {selectedYear}
+            <span className="ml-2">▼</span>
+          </button>
+
+          {isOpen && (
+            <ul className="absolute z-10 w-full bg-white border border-primary rounded-lg mt-1 shadow-lg">
+              {years.map((year) => (
+                <li
+                  key={year}
+                  onClick={() => {
+                    setSelectedYear(year);
+                    setIsOpen(false);
+                  }}
+                  className="cursor-pointer px-4 py-2 text-black hover:bg-primary/10"
+                >
+                  {year}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
+
       <div
         style={{ width: "100%", height: chartHeight }}
         className="text-white"

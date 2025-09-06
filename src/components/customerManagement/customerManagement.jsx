@@ -44,7 +44,7 @@ const CustomerManagement = () => {
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
       email: "example@email.com",
       retailer: 5,
-      sales: "$300",
+      sales: "300",
       status: "Active",
       phone: "+1234567890",
       location: "New York",
@@ -56,7 +56,7 @@ const CustomerManagement = () => {
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
       email: "john@email.com",
       retailer: 3,
-      sales: "$500",
+      sales: "500",
       status: "Inactive",
       phone: "+9876543210",
       location: "California",
@@ -68,7 +68,7 @@ const CustomerManagement = () => {
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
       email: "john@email.com",
       retailer: 3,
-      sales: "$500",
+      sales: "500",
       status: "Active",
       phone: "+9876543210",
       location: "California",
@@ -152,6 +152,7 @@ const CustomerManagement = () => {
       title: "Action",
       key: "action",
       align: "center",
+      with: 120,
       render: (_, record) => (
         // <div className="flex items-center justify-center">
         //   <div className="flex gap-2 border border-primary rounded-md p-1">
@@ -214,7 +215,7 @@ const CustomerManagement = () => {
         // </div>
 
         <div
-          className="flex gap-0 justify-between align-middle py-[7px] px-[15px] border border-primary rounded-md"
+          className="flex gap-2 justify-between align-middle py-[7px] px-[15px] border border-primary rounded-md"
           style={{ alignItems: "center" }}
         >
           <Tooltip title="View Details">
@@ -299,8 +300,8 @@ const CustomerManagement = () => {
   ];
 
   return (
-    <div>
-      <div className="flex justify-between items-end">
+    <div className="w-full">
+      <div className="flex justify-between flex-col md:flex-row gap-0 items-start md:items-end">
         {/* Header */}
         <div className="flex justify-between items-center mb-4 ">
           <div>
@@ -322,9 +323,9 @@ const CustomerManagement = () => {
         </div>
       </div>
 
-      <div className="">
+      <div className="overflow-x-auto">
         <Table
-          dataSource={filteredData}
+          dataSource={data}
           columns={columns}
           pagination={{ pageSize: 10 }}
           bordered={false}
@@ -332,6 +333,7 @@ const CustomerManagement = () => {
           rowClassName="custom-row"
           components={components}
           className="custom-table"
+          scroll={{ x: "max-content" }}
         />
       </div>
 

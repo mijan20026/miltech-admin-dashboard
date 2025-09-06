@@ -130,13 +130,13 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       icon: renderIcon(AuditLog, "/auditLogs"),
       label: <Link to="/auditLogs">{collapsed ? "" : "Audit Logs"}</Link>,
     },
-    {
-      key: "/userManagement",
-      icon: renderIcon(loginCredentials, "/userManagement"),
-      label: (
-        <Link to="/userManagement">{collapsed ? "" : "User Management"}</Link>
-      ),
-    },
+    // {
+    //   key: "/userManagement",
+    //   icon: renderIcon(loginCredentials, "/userManagement"),
+    //   label: (
+    //     <Link to="/userManagement">{collapsed ? "" : "User Management"}</Link>
+    //   ),
+    // },
     {
       key: "/pushNotification",
       icon: renderIcon(loginCredentials, "/pushNotification"),
@@ -154,6 +154,14 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         {
           key: "/profile",
           label: <Link to="/profile">{collapsed ? "" : "Update Profile"}</Link>,
+        },
+        {
+          key: "/userManagement",
+          label: (
+            <Link to="/userManagement">
+              {collapsed ? "" : "User Management"}
+            </Link>
+          ),
         },
         {
           key: "/terms-and-conditions",
@@ -207,7 +215,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       style={{ width: collapsed ? 80 : 250 }}
     >
       {/* Toggle Button */}
-      <div
+      {/* <div
         className="flex justify-end items-center p-2 cursor-pointer"
         onClick={() => setCollapsed(!collapsed)}
       >
@@ -216,7 +224,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         ) : (
           <MenuFoldOutlined style={{ fontSize: 20 }} />
         )}
-      </div>
+      </div> */}
 
       {/* Logo */}
       {!collapsed && (

@@ -69,7 +69,7 @@ const NewCampaign = ({ onSave, onCancel }) => {
 
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">Add New Campaign</h2>
+      <h2 className="text-lg font-bold mb-4">Add New Promotion</h2>
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
         <div className="flex flex-row justify-between gap-4">
           <div className="w-full">

@@ -1,33 +1,25 @@
-import React, { useState } from "react";
-import { imageUrl } from "../../redux/api/baseApi";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import { FaRegBell } from "react-icons/fa6";
 import { Badge, Button, Dropdown, Menu, Modal } from "antd";
-import { useUser } from "../../provider/User";
 import { IoIosLogOut } from "react-icons/io";
 import Avatar from "../../assets/avatar.png";
 
-const Header = () => {
-  const { user } = useUser();
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const src = user?.image?.startsWith("https")
-    ? user?.image
-    : `${imageUrl}/${user?.image}`;
+const Header = ({ toggleSidebar, isMobile }) => {
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
 
   const showLogoutConfirm = () => {
-    setIsLogoutModalOpen(true); // Show the confirmation modal
+    setIsLogoutModalOpen(true); 
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsLogoutModalOpen(false); // Close the modal
-    navigate("/auth/login");
+    setIsLogoutModalOpen(false); 
+    window.location.href = "/auth/login"; 
   };
 
   const handleCancelLogout = () => {
-    setIsLogoutModalOpen(false); // Close the confirmation modal
+    setIsLogoutModalOpen(false); 
   };
 
   const menu = (
@@ -48,9 +40,21 @@ const Header = () => {
 
   return (
     <div className="flex items-center justify-between gap-5 w-full px-4 rounded-md lg:px-10 shadow-sm py-2">
-      <h2 className="font-bold text-xl text-secondary">
-        Super Admin Dashboard
-      </h2>
+      <div className="flex items-center gap-4">
+        {/* Mobile Sidebar Toggle */}
+        {isMobile && (
+          <button
+            onClick={toggleSidebar}
+            className="text-xl text-gray-700 p-2 rounded-md hover:bg-gray-100"
+          >
+            &#9776;
+          </button>
+        )}
+        <h2 className="font-bold text-xl text-secondary">
+          Super Admin Dashboard
+        </h2>
+      </div>
+
       <div className="flex items-center gap-5">
         {/* Profile Icon with Dropdown Menu */}
         <Dropdown overlay={menu} trigger={["click"]} placement="bottomRight">
@@ -70,6 +74,7 @@ const Header = () => {
             />
           </div>
         </Dropdown>
+
         {/* Notification Icon */}
         <Link to="/notification" className="h-fit mt-[10px]">
           <Badge count={5} backgroundColor="#3FC7EE">

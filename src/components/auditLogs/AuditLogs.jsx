@@ -127,7 +127,7 @@ const AuditLogs = () => {
         </div>
       </div>
 
-      <div className="">
+      <div className="overflow-x-auto">
         <Table
           dataSource={data}
           columns={columns}
@@ -137,6 +137,7 @@ const AuditLogs = () => {
           rowClassName="custom-row"
           components={components}
           className="custom-table"
+          scroll={{ x: "max-content" }}
         />
       </div>
 

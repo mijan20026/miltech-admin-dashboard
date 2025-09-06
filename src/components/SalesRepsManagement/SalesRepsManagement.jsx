@@ -8,6 +8,7 @@ import {
   Tooltip,
   Switch,
   message,
+  Rate,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
@@ -49,6 +50,7 @@ const SalesRepsManagementTable = () => {
   const [data, setData] = useState([
     {
       id: 1,
+      MarchantID: 55,
       name: "Alice Johnson",
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
       email: "example@email.com",
@@ -58,9 +60,11 @@ const SalesRepsManagementTable = () => {
       phone: "+1234567890",
       location: "New York",
       businessName: "Alice's Store",
+      feedback: 4,
     },
     {
       id: 2,
+      MarchantID: 59,
       name: "John Doe",
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
       email: "john@email.com",
@@ -70,9 +74,11 @@ const SalesRepsManagementTable = () => {
       phone: "+9876543210",
       location: "California",
       businessName: "John's Shop",
+      feedback: 3,
     },
     {
       id: 3,
+      MarchantID: 85,
       name: "Jane Smith",
       image: "https://i.ibb.co/8gh3mqPR/Ellipse-48-1.jpg",
       email: "jane@email.com",
@@ -82,6 +88,7 @@ const SalesRepsManagementTable = () => {
       phone: "+1112223333",
       location: "Texas",
       businessName: "Jane's Boutique",
+      feedback: 5,
     },
   ]);
 
@@ -169,7 +176,7 @@ const SalesRepsManagementTable = () => {
   // Filter data
   const filteredData = data.filter(
     (item) =>
-      item.id.toString().includes(searchText) ||
+      item.MarchantID.toString().includes(searchText) ||
       item.businessName.toLowerCase().includes(searchText.toLowerCase()) ||
       item.phone.toLowerCase().includes(searchText.toLowerCase()) ||
       item.email.toLowerCase().includes(searchText.toLowerCase())
@@ -179,8 +186,8 @@ const SalesRepsManagementTable = () => {
     { title: "SL", dataIndex: "id", key: "id", align: "center" },
     {
       title: "Merchant Card ID",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "MarchantID",
+      key: "MarchantID",
       align: "center",
     },
     {
@@ -206,12 +213,28 @@ const SalesRepsManagementTable = () => {
     { title: "Total Sales", dataIndex: "sales", key: "sales", align: "center" },
     { title: "Status", dataIndex: "status", key: "status", align: "center" },
     {
+      title: "Ratings",
+      dataIndex: "feedback",
+      key: "feedback",
+      align: "center",
+      render: (_, record) => (
+        <Tooltip title="Customer Ratings">
+          <Rate
+            disabled
+            value={record.feedback} // assuming rating is a number from 1 to 5
+            style={{ fontSize: 16, color: "#FFD700" }} // optional styling
+          />
+        </Tooltip>
+      ),
+    },
+    {
       title: "Action",
       key: "action",
       align: "center",
+      with: 120,
       render: (_, record) => (
         <div
-          className="flex gap-0 justify-between align-middle py-[7px] px-[15px] border border-primary rounded-md"
+          className="flex gap-2 justify-between align-middle py-[7px] px-[15px] border border-primary rounded-md"
           style={{ alignItems: "center" }}
         >
           <Tooltip title="View Details">
@@ -295,9 +318,33 @@ const SalesRepsManagementTable = () => {
     },
   ];
 
+  // Columns for loyalty points / orders
+  const columns2 = [
+    {
+      title: "SL",
+      dataIndex: "orderId",
+      key: "orderId",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "Reward",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Points Used",
+      dataIndex: "amount",
+      key: "amount",
+    },
+  ];
+
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <div className="w-full">
+      <div className="flex justify-between md:flex-row flex-col md:items-end items-start gap-4 mb-6">
         <div>
           <h1 className="text-[24px] font-bold">Merchant Management</h1>
           <p className="text-[16px] font-normal mt-2">
@@ -305,7 +352,7 @@ const SalesRepsManagementTable = () => {
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex md:flex-row flex-col items-start gap-2">
           <Input.Search
             placeholder="Search by ID, Business, Phone, Email"
             value={searchText}
@@ -328,16 +375,19 @@ const SalesRepsManagementTable = () => {
         </div>
       </div>
 
-      <Table
-        dataSource={filteredData}
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-        bordered={false}
-        size="small"
-        rowClassName="custom-row"
-        components={components}
-        className="custom-table"
-      />
+      <div className="overflow-x-auto">
+        <Table
+          dataSource={data}
+          columns={columns}
+          pagination={{ pageSize: 10 }}
+          bordered={false}
+          size="small"
+          rowClassName="custom-row"
+          components={components}
+          className="custom-table"
+          scroll={{ x: "max-content" }}
+        />
+      </div>
 
       {/* View Details Modal */}
       <Modal
@@ -347,38 +397,47 @@ const SalesRepsManagementTable = () => {
         footer={[]}
       >
         {selectedRecord && (
-          <div className="flex flex-row items-center justify-between gap-3 mt-8 mb-8">
-            <img
-              src={MarchantIcon}
-              alt={selectedRecord.name}
-              className="w-214 h-214 rounded-full"
-            />
-            <div className="flex flex-col gap-2 w-full border border-primary rounded-md p-4">
-              <p className="text-[22px] font-bold text-primary">
-                Marchant Profile
-              </p>
-              <p>
-                <strong>Name:</strong> {selectedRecord.name}
-              </p>
-              <p>
-                <strong>Business Name:</strong> {selectedRecord.businessName}
-              </p>
-              <p>
-                <strong>Email:</strong> {selectedRecord.email}
-              </p>
-              <p>
-                <strong>Phone:</strong> {selectedRecord.phone}
-              </p>
-              <p>
-                <strong>Location:</strong> {selectedRecord.location}
-              </p>
-              <p>
-                <strong>Total Sales:</strong> {selectedRecord.sales}
-              </p>
-              <p>
-                <strong>Status:</strong> {selectedRecord.status}
-              </p>
+          <div className="flex flex-col">
+            <div className="flex flex-row items-center justify-between gap-3 mt-8 mb-8">
+              <img
+                src={MarchantIcon}
+                alt={selectedRecord.name}
+                className="w-214 h-214 rounded-full"
+              />
+              <div className="flex flex-col gap-2 w-full border border-primary rounded-md p-4">
+                <p className="text-[22px] font-bold text-primary">
+                  Marchant Profile
+                </p>
+                <p>
+                  <strong>Name:</strong> {selectedRecord.name}
+                </p>
+                <p>
+                  <strong>Business Name:</strong> {selectedRecord.businessName}
+                </p>
+                <p>
+                  <strong>Email:</strong> {selectedRecord.email}
+                </p>
+                <p>
+                  <strong>Phone:</strong> {selectedRecord.phone}
+                </p>
+                <p>
+                  <strong>Location:</strong> {selectedRecord.location}
+                </p>
+                <p>
+                  <strong>Total Sales:</strong> {selectedRecord.sales}
+                </p>
+                <p>
+                  <strong>Status:</strong> {selectedRecord.status}
+                </p>
+              </div>
             </div>
+            <Table
+              columns={columns2}
+              dataSource={data}
+              rowKey="orderId"
+              pagination={{ pageSize: 5 }}
+              className="mt-6"
+            />
           </div>
         )}
       </Modal>
